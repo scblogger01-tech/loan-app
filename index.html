@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<title>Instant Loan Finder</title>
+
+<style>
+:root{
+    --primary:#10b981;
+    --dark:#0f172a;
+    --light:#f8fafc;
+    --gray:#64748b;
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    background:var(--light);
+    color:var(--dark);
+}
+
+/* Welcome Screen */
+#welcome-screen{
+    position:fixed;
+    inset:0;
+    background:linear-gradient(135deg,#0f172a,#1e293b);
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    color:white;
+    padding:20px;
+    z-index:9999;
+}
+
+.welcome-icon{
+    font-size:60px;
+    margin-bottom:20px;
+}
+
+.welcome-quote{
+    font-size:24px;
+    font-weight:bold;
+    margin-bottom:10px;
+    max-width:400px;
+}
+
+.welcome-sub{
+    color:#cbd5e1;
+    margin-bottom:25px;
+    max-width:350px;
+}
+
+.get-offer-btn{
+    background:var(--primary);
+    color:white;
+    border:none;
+    padding:14px 30px;
+    border-radius:30px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+/* Main Content */
+#main-content{
+    display:none;
+    max-width:500px;
+    margin:auto;
+    padding:20px;
+}
+
+header{
+    text-align:center;
+    margin-bottom:20px;
+}
+
+header h1{
+    margin-bottom:5px;
+}
+
+header p{
+    color:var(--gray);
+    font-size:14px;
+}
+
+/* Filters */
+.filter-track{
+    display:flex;
+    gap:10px;
+    overflow-x:auto;
+    margin:20px 0;
+}
+
+.filter-btn{
+    padding:10px 14px;
+    border:none;
+    border-radius:20px;
+    background:white;
+    border:1px solid #ddd;
+    cursor:pointer;
+    white-space:nowrap;
+}
+
+.filter-btn.active{
+    background:var(--dark);
+    color:white;
+}
+
+/* Loan Cards */
+.loan-list{
+    display:flex;
+    flex-direction:column;
+    gap:15px;
+}
+
+.loan-card{
+    background:white;
+    border-radius:12px;
+    padding:20px;
+    border:1px solid #e2e8f0;
+    position:relative;
+}
+
+.badge{
+    position:absolute;
+    top:15px;
+    right:15px;
+    background:#d1fae5;
+    color:#065f46;
+    padding:5px 10px;
+    border-radius:20px;
+    font-size:11px;
+    font-weight:bold;
+}
+
+.nbfc-name{
+    font-size:20px;
+    font-weight:bold;
+    margin-bottom:15px;
+}
+
+.details-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:10px;
+    margin-bottom:15px;
+}
+
+.detail-item{
+    text-align:center;
+}
+
+.detail-label{
+    font-size:12px;
+    color:var(--gray);
+}
+
+.detail-value{
+    font-size:13px;
+    font-weight:bold;
+}
+
+.apply-btn{
+    display:block;
+    text-align:center;
+    background:var(--primary);
+    color:white;
+    padding:12px;
+    border-radius:8px;
+    text-decoration:none;
+    font-weight:bold;
+}
+
+.ad-space{
+    background:#e2e8f0;
+    padding:15px;
+    text-align:center;
+    border-radius:10px;
+    margin:20px 0;
+    color:var(--gray);
+}
+
+footer{
+    margin-top:30px;
+    padding:20px 0;
+    font-size:12px;
+    color:var(--gray);
+    text-align:center;
+}
+</style>
+</head>
+
+<body>
+
+<!-- Welcome Screen -->
+<div id="welcome-screen">
+    <div class="welcome-icon">⚡</div>
+
+    <h2 class="welcome-quote">
+        Emergency doesn't wait. Neither should your approval.
+    </h2>
+
+    <p class="welcome-sub">
+        Compare RBI-approved instant loan providers in 60 seconds.
+    </p>
+
+    <button class="get-offer-btn" onclick="showOffers()">
+        Get Offer Now →
+    </button>
+</div>
+
+<!-- Main Content -->
+<div id="main-content">
+
+<header>
+    <h1>⚡ Instant Loan Finder</h1>
+    <p>Compare pre-approved NBFC digital lending platforms</p>
+</header>
+
+<!-- Filters -->
+<div class="filter-track">
+    <button id="btn-all"
+        class="filter-btn active"
+        onclick="filterLoans('all','btn-all')">
+        All
+    </button>
+
+    <button id="btn-instant"
+        class="filter-btn"
+        onclick="filterLoans('Instant','btn-instant')">
+        Instant
+    </button>
+
+    <button id="btn-low"
+        class="filter-btn"
+        onclick="filterLoans('Low-Interest','btn-low')">
+        Low Interest
+    </button>
+
+    <button id="btn-high"
+        class="filter-btn"
+        onclick="filterLoans('High-Amount','btn-high')">
+        High Amount
+    </button>
+</div>
+
+<div style="margin:15px 0;">
+    <a href="emi.html"
+   style="
+   display:block;
+   text-align:center;
+   background:#0f172a;
+   color:white;
+   text-decoration:none;
+   padding:14px;
+   border-radius:12px;
+   font-weight:bold;
+   font-size:15px;
+   margin-bottom:20px;">
+   📊 Open EMI Calculator
+</a>
+</div>
+
+<!-- Ad -->
+<div class="ad-space">
+    Top Ad Space
+</div>
+
+<!-- Loan Cards -->
+<div class="loan-list">
+
+    <!-- Card 1 -->
+    <div class="loan-card Instant High-Amount">
+        <span class="badge">98% Approval</span>
+
+        <div class="nbfc-name">KreditBee</div>
+
+        <div class="details-grid">
+            <div class="detail-item">
+                <div class="detail-label">Max Amount</div>
+                <div class="detail-value">₹4,00,000</div>
+            </div>
+
+            <div class="detail-item">
+                <div class="detail-label">Interest</div>
+                <div class="detail-value">1.02% pm</div>
+            </div>
+
+            <div class="detail-item">
+                <div class="detail-label">Time</div>
+                <div class="detail-value">10 Mins</div>
+            </div>
+        </div>
+
+        <a href="#"
+           class="apply-btn"
+           target="_blank">
+           Apply Now →
+        </a>
+    </div>
+
+    <!-- Card 2 -->
+    <div class="loan-card Instant Low-Interest">
+        <span class="badge">Low Interest</span>
+
+        <div class="nbfc-name">SmartCoin</div>
+
+        <div class="details-grid">
+            <div class="detail-item">
+                <div class="detail-label">Max Amount</div>
+                <div class="detail-value">₹1,00,000</div>
+            </div>
+
+            <div class="detail-item">
+                <div class="detail-label">Interest</div>
+                <div class="detail-value">1.5% pm</div>
+            </div>
+
+            <div class="detail-item">
+                <div class="detail-label">Time</div>
+                <div class="detail-value">5 Mins</div>
+            </div>
+        </div>
+
+        <a href="#"
+           class="apply-btn"
+           target="_blank">
+           Apply Now →
+        </a>
+    </div>
+
+    <!-- Card 3 -->
+    <div class="loan-card Instant">
+        <span class="badge">Fast Approval</span>
+
+        <div class="nbfc-name">mPokket</div>
+
+        <div class="details-grid">
+            <div class="detail-item">
+                <div class="detail-label">Max Amount</div>
+                <div class="detail-value">₹45,000</div>
+            </div>
+
+            <div class="detail-item">
+                <div class="detail-label">Interest</div>
+                <div class="detail-value">2.0% pm</div>
+            </div>
+
+            <div class="detail-item">
+                <div class="detail-label">Time</div>
+                <div class="detail-value">Instant</div>
+            </div>
+        </div>
+
+        <a href="#"
+           class="apply-btn"
+           target="_blank">
+           Apply Now →
+        </a>
+    </div>
+
+</div>
+
+<!-- Bottom Ad -->
+<div class="ad-space">
+    Bottom Ad Space
+</div>
+
+<footer>
+    Disclaimer: We are a digital aggregator platform and not a lender.
+    Users are redirected to official RBI-approved lending partners.
+</footer>
+
+</div>
+
+<script>
+function showOffers() {
+    document.getElementById("welcome-screen").style.display = "none";
+    document.getElementById("main-content").style.display = "block";
+}
+
+function filterLoans(category, activeBtnId) {
+
+    const cards = document.querySelectorAll(".loan-card");
+
+    cards.forEach(card => {
+
+        if(category === "all") {
+            card.style.display = "block";
+        } else {
+
+            if(card.classList.contains(category)) {
+                card.style.display = "block";
+            } else {
+                card.style.display = "none";
+            }
+        }
+    });
+
+    document.querySelectorAll(".filter-btn")
+        .forEach(btn => btn.classList.remove("active"));
+
+    document.getElementById(activeBtnId)
+        .classList.add("active");
+}
+</script>
+
+</body>
+</html>
+
+

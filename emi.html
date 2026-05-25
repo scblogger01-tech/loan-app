@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>EMI Calculator</title>
+
+<style>
+
+body{
+    margin:0;
+    padding:20px;
+    background:#f8fafc;
+    font-family:Arial,sans-serif;
+}
+
+.container{
+    max-width:500px;
+    margin:auto;
+}
+
+.card{
+    background:white;
+    padding:25px;
+    border-radius:15px;
+    box-shadow:0 4px 10px rgba(0,0,0,0.05);
+}
+
+h1{
+    text-align:center;
+    margin-bottom:20px;
+}
+
+input{
+    width:100%;
+    padding:14px;
+    margin-top:8px;
+    margin-bottom:18px;
+    border:1px solid #ddd;
+    border-radius:10px;
+    box-sizing:border-box;
+}
+
+button{
+    width:100%;
+    background:#10b981;
+    color:white;
+    border:none;
+    padding:15px;
+    border-radius:10px;
+    font-size:16px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.result{
+    margin-top:20px;
+    background:#f1f5f9;
+    padding:20px;
+    border-radius:12px;
+    text-align:center;
+}
+
+.ad-box{
+    background:#e2e8f0;
+    padding:20px;
+    border-radius:10px;
+    text-align:center;
+    margin-top:20px;
+    color:#64748b;
+    font-weight:bold;
+}
+
+.back-btn{
+    display:block;
+    margin-top:20px;
+    text-align:center;
+    text-decoration:none;
+    background:#0f172a;
+    color:white;
+    padding:14px;
+    border-radius:10px;
+    font-weight:bold;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="card">
+
+<h1>📊 EMI Calculator</h1>
+
+<label>Loan Amount</label>
+<input type="number" id="amount" placeholder="50000">
+
+<label>Interest Rate (%)</label>
+<input type="number" id="rate" placeholder="12">
+
+<label>Loan Tenure (Months)</label>
+<input type="number" id="months" placeholder="12">
+
+<button onclick="calculateEMI()">
+    Calculate EMI
+</button>
+
+<div class="result" id="result">
+
+    Monthly EMI will appear here
+
+</div>
+
+</div>
+
+<!-- Ads -->
+<div class="ad-box">
+
+    Your AdSense / Monetag Ad Here
+
+</div>
+
+<a href="index.html" class="back-btn">
+    ← Back to Loan Offers
+</a>
+
+</div>
+
+<script>
+
+function calculateEMI(){
+
+    let P = parseFloat(document.getElementById("amount").value);
+
+    let annualRate = parseFloat(document.getElementById("rate").value);
+
+    let N = parseFloat(document.getElementById("months").value);
+
+    let R = annualRate / 12 / 100;
+
+    if(!P || !annualRate || !N){
+
+        document.getElementById("result").innerHTML =
+            "Please fill all fields";
+
+        return;
+    }
+
+    let EMI =
+        (P * R * Math.pow(1 + R, N)) /
+        (Math.pow(1 + R, N) - 1);
+
+    let total = EMI * N;
+
+    let interest = total - P;
+
+    document.getElementById("result").innerHTML =
+
+        "<h2>₹" + EMI.toFixed(0) + "/month</h2>" +
+
+        "<p>Total Payment: ₹" + total.toFixed(0) + "</p>" +
+
+        "<p>Total Interest: ₹" + interest.toFixed(0) + "</p>";
+}
+
+</script>
+
+</body>
+</html>
